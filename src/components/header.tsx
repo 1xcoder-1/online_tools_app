@@ -10,7 +10,6 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { Logo } from '@/components/logo'
-import { ModeToggle } from '@/components/mode-toggle'
 import { LIST_TOOLS } from '@/lib/constants'
 
 function HeaderBreadcrumb() {
@@ -67,7 +66,6 @@ export function Header() {
         </div>
 
         <div className='flex items-center gap-3'>
-          <ModeToggle />
 
           <Tooltip>
             <TooltipTrigger>

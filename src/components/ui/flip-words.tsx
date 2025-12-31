@@ -8,12 +8,15 @@ type Word = {
   className: string
 }
 
+import { cn } from '@/lib/utils'
+
 type FlipWordsProps = {
   words: Word[]
   duration?: number
+  className?: string
 }
 
-export const FlipWords = ({ words, duration = 2000 }: FlipWordsProps) => {
+export const FlipWords = ({ words, duration = 2000, className }: FlipWordsProps) => {
   const [index, setIndex] = useState(0)
 
   useEffect(() => {
@@ -24,16 +27,24 @@ export const FlipWords = ({ words, duration = 2000 }: FlipWordsProps) => {
     return () => clearInterval(interval)
   }, [duration, words.length])
 
+  // Find longest word for sizing
+  const longestWord = words.reduce((a, b) => a.text.length > b.text.length ? a : b, words[0]);
+
   return (
-    <div className='relative inline-grid h-7 sm:h-10 overflow-hidden min-w-[150px] align-top'>
+    <div className={cn('relative inline-grid overflow-hidden align-top justify-items-center', className)}>
+      {/* Invisible copy of the longest word to set container size */}
+      <div className={cn("invisible opacity-0 px-2 select-none", longestWord.className)}>
+        {longestWord.text}
+      </div>
+
       <AnimatePresence mode='wait'>
         <motion.div
           key={words[index].text}
-          initial={{ y: '100%' }}
-          animate={{ y: '0%' }}
-          exit={{ y: '-100%' }}
-          transition={{ duration: 0.5, ease: 'easeInOut' }}
-          className={`absolute left-0 top-0 w-full ${words[index].className}`}
+          initial={{ y: '100%', opacity: 0 }}
+          animate={{ y: '0%', opacity: 1 }}
+          exit={{ y: '-100%', opacity: 0 }}
+          transition={{ duration: 0.4, ease: 'easeInOut' }}
+          className={cn(`absolute left-0 top-0 w-full text-center whitespace-nowrap`, words[index].className)}
         >
           {words[index].text}
         </motion.div>

@@ -11,9 +11,8 @@ export default function Providers({ children }: ProvidersProps) {
   return (
     <ThemeProvider
       attribute='class'
-      defaultTheme='system'
-      enableSystem
-      enableColorScheme
+      defaultTheme='light'
+      forcedTheme='light'
       disableTransitionOnChange
     >
       <TooltipProvider delayDuration={0}>{children}</TooltipProvider>
