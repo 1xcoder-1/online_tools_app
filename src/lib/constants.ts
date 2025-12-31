@@ -1,4 +1,5 @@
 import {
+  FileTextIcon,
   ImageIcon,
   KeyIcon,
   KeyboardIcon,
@@ -70,6 +71,13 @@ export const LIST_TOOLS: ListTools[] = [
         keywords: ['Generator', 'QR', 'Code', 'Barcode'],
         color: '#0891b2',
         icon: QrCodeIcon
+      },
+      {
+        label: 'Lorem Ipsum Generator',
+        link: '/generator/lorem-ipsum-generator',
+        keywords: ['Generator', 'Lorem', 'Ipsum', 'Text', 'Placeholder'],
+        color: '#845ef7',
+        icon: FileTextIcon
       }
     ]
   },

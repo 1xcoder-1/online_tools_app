@@ -1,7 +1,7 @@
 'use client'
 
-import { useAnimate } from 'framer-motion'
-import { useEffect } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 
 type Word = {
   text: string
@@ -10,34 +10,34 @@ type Word = {
 
 type FlipWordsProps = {
   words: Word[]
+  duration?: number
 }
 
-export const FlipWords = ({ words }: FlipWordsProps) => {
-  const [scope, animate] = useAnimate()
+export const FlipWords = ({ words, duration = 2000 }: FlipWordsProps) => {
+  const [index, setIndex] = useState(0)
 
   useEffect(() => {
-    animate(
-      [
-        [scope.current, { y: '-25%' }, { duration: 0.3, at: '+1.3' }],
-        [scope.current, { y: '-50%' }, { duration: 0.3, at: '+1.3' }],
-        [scope.current, { y: '-75%' }, { duration: 0.3, at: '+1.3' }],
-        [scope.current, { y: '-100%' }, { duration: 0.3, at: '+1.3' }]
-      ],
-      {
-        repeat: Number.POSITIVE_INFINITY
-      }
-    )
-  }, [animate, scope])
+    const interval = setInterval(() => {
+      setIndex((prevIndex) => (prevIndex + 1) % words.length)
+    }, duration)
+
+    return () => clearInterval(interval)
+  }, [duration, words.length])
 
   return (
-    <div className='inline-grid h-7 overflow-hidden sm:h-10'>
-      <div ref={scope}>
-        {words.map(({ text, className }) => (
-          <div className={className} key={text}>
-            {text}
-          </div>
-        ))}
-      </div>
+    <div className='relative inline-grid h-7 sm:h-10 overflow-hidden min-w-[150px] align-top'>
+      <AnimatePresence mode='wait'>
+        <motion.div
+          key={words[index].text}
+          initial={{ y: '100%' }}
+          animate={{ y: '0%' }}
+          exit={{ y: '-100%' }}
+          transition={{ duration: 0.5, ease: 'easeInOut' }}
+          className={`absolute left-0 top-0 w-full ${words[index].className}`}
+        >
+          {words[index].text}
+        </motion.div>
+      </AnimatePresence>
     </div>
   )
 }
